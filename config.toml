@@ -5,7 +5,7 @@
 # base_url MUST be correct or feeds + absolute links break.
 # FREE path (no domain, no money): make a repo named EXACTLY USERNAME.github.io,
 # then set the line below to that same address (replace USERNAME with your username).
-base_url = "https://USERNAME.github.io"   # ← EDIT: swap in your real username
+base_url = "https://MirrorStaged.github.io"   # ← EDIT: swap in your real username
 # (Only relevant if you ever buy a domain — you said no, so ignore this.)
 
 title = "Jane Q. Researcher"        # ← EDIT (site title / your name)
