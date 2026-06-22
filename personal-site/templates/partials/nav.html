@@ -1,0 +1,5 @@
+<nav class="site-nav">
+  {%- for item in config.extra.nav %}
+  <a href="{{ get_url(path=item.path) }}">{{ item.name }}</a>
+  {%- endfor %}
+</nav>

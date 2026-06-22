@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ config.title }}{% endblock title %}
+{% block content %}
+<article>
+  {{ section.content | safe }}
+  {%- if config.extra.profiles %}
+  <p class="profiles small">
+    {%- for name, url in config.extra.profiles %}
+    <a href="{{ url }}" rel="me">{{ name }}</a>{% if not loop.last %} · {% endif %}
+    {%- endfor %}
+  </p>
+  {%- endif %}
+</article>
+{% endblock content %}

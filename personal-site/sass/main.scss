@@ -1,0 +1,185 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Tufte/Gwern-lineage stylesheet.
+   Signature: asymmetric measure — body text in a ~55% column, notes float
+   into the wide right margin. Everything else stays quiet.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --bg:     #fffff8;   /* Tufte paper, not pure white */
+  --fg:     #111110;
+  --muted:  #6b6b62;
+  --rule:   #d8d8cc;
+  --accent: #7a1f1f;   /* oxblood — hover/focus only, never fill */
+
+  --serif: Charter, "Bitstream Charter", "Iowan Old Style", "Palatino Linotype",
+           Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
+  --mono:  "SF Mono", "JetBrains Mono", ui-monospace, "DejaVu Sans Mono",
+           Menlo, Consolas, monospace;
+
+  --measure: 55%;      /* main text column width on wide screens */
+  --leading: 1.6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:     #15140f;
+    --fg:     #d9d6cc;
+    --muted:  #9a968a;
+    --rule:   #34322b;
+    --accent: #d98a6a;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { font-size: 100%; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  line-height: var(--leading);
+  font-kerning: normal;
+  font-variant-numeric: oldstyle-nums;
+  text-rendering: optimizeLegibility;
+  counter-reset: sidenote-counter;
+}
+
+/* ── Layout shell ──────────────────────────────────────────────────────── */
+.wrap {
+  width: 87.5%;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 0.5rem;
+}
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+  padding-top: 2.5rem;
+  padding-bottom: 0.5rem;
+}
+.site-name { font-weight: 600; font-size: 1.15rem; text-decoration: none; }
+.site-nav { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+.site-nav a { font-variant: small-caps; letter-spacing: 0.02em; font-size: 1.05rem; }
+
+main { padding-top: 1.5rem; padding-bottom: 4rem; }
+
+/* ── Tufte text column: constrain main children, let exceptions breathe ── */
+main > article > *,
+main > article > section > * {
+  width: var(--measure);
+}
+main > article > h1 { width: var(--measure); }
+
+@media (max-width: 760px) {
+  :root { --measure: 100%; }
+  body { font-size: 1.08rem; }
+  .wrap { width: 92%; }
+}
+
+/* ── Typography ────────────────────────────────────────────────────────── */
+h1, h2, h3, h4 { font-weight: 600; line-height: 1.25; margin: 2.2rem 0 0.6rem; }
+h1 { font-size: 2.0rem; margin-top: 0.5rem; }
+h2 { font-size: 1.45rem; font-variant: small-caps; letter-spacing: 0.01em; }
+h3 { font-size: 1.2rem; font-style: italic; font-weight: 500; }
+
+p { margin: 0 0 1.1rem; }
+p, li { hyphens: auto; }
+
+a { color: var(--fg); text-decoration: underline; text-decoration-thickness: 0.5px;
+    text-underline-offset: 2px; }
+a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+strong, b { font-weight: 600; }
+.muted { color: var(--muted); }
+.small { font-size: 0.92rem; }
+
+hr { border: 0; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+
+ul, ol { padding-left: 1.4rem; margin: 0 0 1.1rem; }
+li { margin: 0.2rem 0; }
+
+blockquote {
+  margin: 1.4rem 0; padding-left: 1.2rem;
+  border-left: 2px solid var(--rule);
+  color: var(--muted); font-style: italic;
+}
+blockquote p:last-child { margin-bottom: 0; }
+
+/* ── Code ──────────────────────────────────────────────────────────────── */
+code, pre { font-family: var(--mono); font-size: 0.88em; font-variant-numeric: normal; }
+code { background: color-mix(in srgb, var(--fg) 7%, transparent); padding: 0.1em 0.35em; border-radius: 2px; }
+pre { background: color-mix(in srgb, var(--fg) 6%, transparent); padding: 1rem 1.2rem;
+      overflow-x: auto; line-height: 1.45; border-radius: 2px; }
+pre code { background: none; padding: 0; }
+
+/* ── Tables: rules, never boxes ────────────────────────────────────────── */
+table { border-collapse: collapse; width: var(--measure); margin: 1.4rem 0; font-size: 0.95rem;
+        font-variant-numeric: lining-nums tabular-nums; }
+th, td { padding: 0.4rem 0.9rem 0.4rem 0; text-align: left; }
+thead th { border-bottom: 1.5px solid var(--fg); font-variant: small-caps; font-weight: 600; }
+tbody tr { border-bottom: 1px solid var(--rule); }
+
+/* ── Figures (may break the measure) ──────────────────────────────────── */
+figure { margin: 1.6rem 0; }
+figure img { max-width: 100%; height: auto; }
+figcaption { color: var(--muted); font-size: 0.92rem; margin-top: 0.4rem; }
+.fullwidth { width: 100% !important; max-width: 100%; }
+
+/* ── THE SIGNATURE: sidenotes & margin notes ──────────────────────────── */
+.sidenote, .marginnote {
+  float: right; clear: right;
+  width: 50%;
+  margin: 0.3rem -60% 1rem 0;   /* push into the right margin */
+  font-size: 0.85rem; line-height: 1.4;
+  color: var(--muted);
+  position: relative;
+  font-variant-numeric: oldstyle-nums;
+}
+.sidenote-number { counter-increment: sidenote-counter; }
+.sidenote-number::after {
+  content: counter(sidenote-counter);
+  font-size: 0.7rem; vertical-align: super; line-height: 0;
+  margin-left: 1px; color: var(--accent);
+}
+.sidenote::before {
+  content: counter(sidenote-counter) " ";
+  font-size: 0.7rem; vertical-align: super; line-height: 0;
+  color: var(--accent);
+}
+/* checkboxes that drive the mobile toggle are hidden on wide screens */
+input.margin-toggle { display: none; }
+label.sidenote-number { display: inline; }
+label.margin-toggle:not(.sidenote-number) { display: none; }
+
+@media (max-width: 760px) {
+  label.margin-toggle:not(.sidenote-number) { display: inline; cursor: pointer; color: var(--accent); }
+  .sidenote, .marginnote {
+    display: none;
+    float: none; width: auto;
+    margin: 0.8rem 0; padding: 0.6rem 0.9rem;
+    background: color-mix(in srgb, var(--fg) 5%, transparent);
+    border-left: 2px solid var(--rule);
+  }
+  .margin-toggle:checked + .sidenote,
+  .margin-toggle:checked + .marginnote { display: block; }
+}
+
+/* ── Lists of posts ───────────────────────────────────────────────────── */
+.post-list { list-style: none; padding: 0; }
+.post-list li { display: flex; gap: 1rem; align-items: baseline; margin: 0.5rem 0; }
+.post-list time { color: var(--muted); font-size: 0.9rem; font-variant-numeric: tabular-nums;
+                  flex: 0 0 6.5rem; }
+.pagination { display: flex; gap: 2rem; margin-top: 2rem; }
+.profiles { margin-top: 2rem; }
+.byline { margin-top: -0.4rem; }
+
+.site-footer { padding-bottom: 3rem; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

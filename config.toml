@@ -1,0 +1,51 @@
+# ── Zola configuration ─────────────────────────────────────────────────────
+# Verified against Zola 0.22.x. Keys marked [v] changed across versions — if you
+# bump Zola, re-check these in https://www.getzola.org/documentation/
+
+# base_url MUST be correct or feeds + absolute links break.
+# FREE path (no domain, no money): make a repo named EXACTLY USERNAME.github.io,
+# then set the line below to that same address (replace USERNAME with your username).
+base_url = "https://USERNAME.github.io"   # ← EDIT: swap in your real username
+# (Only relevant if you ever buy a domain — you said no, so ignore this.)
+
+title = "Jane Q. Researcher"        # ← EDIT (site title / your name)
+description = "Personal site of Jane Q. Researcher."  # ← EDIT
+
+compile_sass = true
+build_search_index = false          # flip to true to enable client-side search (adds an index file)
+generate_feeds = true               # [v] was `generate_feed` (singular) before 0.19
+feed_filenames = ["atom.xml"]       # [v] was `feed_filename` (string) before 0.19
+
+[markdown]
+highlight_code = true
+# Emit syntax CSS as classes so light/dark can swap via media query (see head.html).
+highlight_theme = "css"
+# NOTE: invalid theme names are the single most likely first CI failure.
+# These two ship with Zola's bundled themeset. To see all available names, run
+# `zola check` locally or consult the syntax-highlighting docs.
+highlight_themes_css = [
+  { theme = "base16-ocean-light", filename = "syntax-light.css" },
+  { theme = "base16-ocean-dark",  filename = "syntax-dark.css"  },
+]
+smart_punctuation = true            # curly quotes, em dashes — appropriate for an academic register
+
+[extra]
+author = "Jane Q. Researcher"       # ← EDIT
+email  = "jane@example.com"         # ← EDIT (rendered obfuscated; see partials/head + content)
+footer = 'Built with <a href="https://www.getzola.org">Zola</a>. Source on <a href="https://github.com/USERNAME/REPO">GitHub</a>.'
+
+# Top nav. `path` uses Zola's @/ internal-link syntax (resolves at build, fails loudly if broken).
+nav = [
+  { name = "Home",         path = "/" },
+  { name = "CV",           path = "@/cv.md" },
+  { name = "Publications", path = "@/publications.md" },
+  { name = "Notes",        path = "@/blog/_index.md" },
+]
+
+# External scholarly profiles — rendered on the home page. Delete any you don't use.
+[extra.profiles]
+orcid   = "https://orcid.org/0000-0000-0000-0000"
+scholar = "https://scholar.google.com/citations?user=XXXX"
+github  = "https://github.com/USERNAME"
+# arxiv = "https://arxiv.org/a/lastname_f_1"
+# dblp  = "https://dblp.org/pid/XXX/XXX.html"

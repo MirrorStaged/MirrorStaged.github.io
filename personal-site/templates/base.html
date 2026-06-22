@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>{% include "partials/head.html" %}</head>
+<body>
+  <header class="wrap site-header">
+    <a class="site-name" href="{{ get_url(path='/') }}">{{ config.extra.author | default(value=config.title) }}</a>
+    {% include "partials/nav.html" %}
+  </header>
+  <main class="wrap">
+    {% block content %}{% endblock content %}
+  </main>
+  <footer class="wrap site-footer">
+    <hr/>
+    <p class="muted small">{{ config.extra.footer | default(value="") | safe }}</p>
+  </footer>
+</body>
+</html>
